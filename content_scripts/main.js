@@ -1,7 +1,7 @@
 // we're going to do most of the work in here.
 
-// TODO: find the HTML container for posts in the group by ID
-
+// TODO: find the HTML container for posts in the group by name
+// COMPLETE
 
 var findPosts = function (name) {
 	var wrapper_element_list =  $('.userContentWrapper');
