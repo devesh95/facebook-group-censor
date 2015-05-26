@@ -8,6 +8,7 @@
         "persistent": false
     },
     "permissions": [
+        "declarativeContent",
         "activeTab"
     ],
     "content_scripts": [
@@ -22,9 +23,5 @@
     			"content_scripts/main.js"
     		]
     	}
-    ],
-    "page_action": {
-        "default_popup": "popup/popup.html",
-        "default_title": "Facebook Group Censor"
-    }
+    ]
 }
