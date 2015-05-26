@@ -14,7 +14,7 @@
     			"http://www.facebook.com",
     			"https://www.facebook.com"
     		],
-    		"css": ["content_scripts/main.css"],
+    		"css": [],
     		"js": [
     			"content_scripts/jquery.min.js",
     			"content_scripts/main.js"
