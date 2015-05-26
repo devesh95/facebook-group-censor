@@ -17,7 +17,7 @@ inputBox += "    padding: 16px;";
 inputBox += "    background: #F7F7F7;";
 inputBox += "\">";
 inputBox += "        <p style=\"font-size: 14px;";
-inputBox += "    margin: 10px;\">Whom do you want to personally censor? Enter names below.<\/p>";
+inputBox += "    margin: 10px; margin-top:0;\">Whom do you want to personally censor? Enter names below.<\/p>";
 inputBox += "        <input style=\"-webkit-transition: all 0.30s ease-in-out;";
 inputBox += "    -moz-transition: all 0.30s ease-in-out;";
 inputBox += "    -ms-transition: all 0.30s ease-in-out;";
@@ -167,6 +167,21 @@ window.init = function (input) {
 		elem.append($(window.content_list[id].comments));
 	});
 };
+
+var target = document.querySelector('#contentArea');
+ 
+// create an observer instance
+var observer = new MutationObserver(function(mutations) {
+  mutations.forEach(function(mutation) {
+    console.log(mutation.type);
+  });    
+});
+ 
+// configuration of the observer:
+var config = { attributes: true, childList: true, characterData: true };
+ 
+// pass in the target node, as well as the observer options
+observer.observe(target, config);
 
 window.onscroll = function () {
 	var old = window.nodes;
