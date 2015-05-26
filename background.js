@@ -9,7 +9,7 @@ chrome.runtime.onInstalled.addListener(function() {
             {
                 conditions: [
                     new chrome.declarativeContent.PageStateMatcher({
-                        pageUrl: { hostSuffix: '.facebook.com', pathPrefix: '/groups/' }
+                        pageUrl: { hostSuffix: '.facebook.com', pathPrefix: 'groups/' }
                     })
                 ],
 
