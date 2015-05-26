@@ -1,0 +1,29 @@
+{
+    "manifest_version": 2,
+    "name": "Facebook group censor",
+    "description": "Hides posts and comments in Facebook groups",
+    "version": "1.0",
+    "background": {
+        "scripts": [ "background.js" ],
+        "persistent": false
+    },
+    "permissions": [],
+    "content_scripts": [
+    	{
+    		"matches": [
+    			"http://www.facebook.com",
+    			"https://www.facebook.com"
+    		],
+    		"css": ["content_scripts/main.css"],
+    		"js": [
+    			"content_scripts/jquery.min.js",
+    			"content_scripts/main.js"
+    		]
+    	}
+    ],
+    "page_action": {
+        "default_popup": "",
+        "default_icon": "",
+        "default_title": ""
+    }
+}
