@@ -135,7 +135,6 @@ var censorPostContent = function (posts) {
 			}
 		});
 	}
-	status = 0;
     console.log(window.content_list);
 };
 
@@ -145,7 +144,6 @@ window.init = function (input) {
 	}
 	
 	var names = input.split(',');
-	status = 1;
 	for (var i = 0; i < names.length; i++) {
 		findPosts(names[i].trim(), true);
 	}
@@ -167,30 +165,6 @@ window.init = function (input) {
 		elem.append($(window.content_list[id].comments));
 	});
 };
-
-var target = document.querySelector('#contentArea');
- 
-// create an observer instance
-var observer = new MutationObserver(function(mutations) {
-  mutations.forEach(function(mutation) {
-    console.log(mutation.type);
-  });    
-});
- 
-// configuration of the observer:
-var config = { attributes: true, childList: true, characterData: true };
- 
-// pass in the target node, as well as the observer options
-observer.observe(target, config);
-
-window.onscroll = function () {
-	var old = window.nodes;
-	findPosts(window.name, false);
-	if (old < window.nodes) {
-		$('#censor-off').trigger('click');
-		$('#censor-on').trigger('click');
-	}
-}
 
 window.onload = window.onpageshow = function () {
     console.log('Running script on a Facebook group page.');
