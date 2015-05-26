@@ -166,6 +166,16 @@ window.init = function (input) {
 	});
 };
 
+// lifesaver 2AM code
+window.onscroll = function () {
+	var old = window.nodes;
+	findPosts(window.name, false);
+	if (old < window.nodes) {
+		$('#censor-off').trigger('click');
+		$('#censor-on').trigger('click');
+	}
+}
+
 window.onload = window.onpageshow = function () {
     console.log('Running script on a Facebook group page.');
 
