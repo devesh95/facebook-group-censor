@@ -17,7 +17,7 @@ inputBox += "    padding: 16px;";
 inputBox += "    background: #F7F7F7;";
 inputBox += "\">";
 inputBox += "        <p style=\"font-size: 14px;";
-inputBox += "    margin: 10px; margin-top:0;\">Whom do you want to personally censor? Enter names below.<\/p>";
+inputBox += "    margin: 10px; margin-top:0;\">Whose posts would you like to hide? Enter names below.<\/p>";
 inputBox += "        <input style=\"-webkit-transition: all 0.30s ease-in-out;";
 inputBox += "    -moz-transition: all 0.30s ease-in-out;";
 inputBox += "    -ms-transition: all 0.30s ease-in-out;";
@@ -84,13 +84,13 @@ var findPosts = function (name, censor) {
 					// check if the span text contains (vs exact match?) the input name
 					if (spanElement.text().toLowerCase().indexOf(name.toLowerCase()) > -1) {
 						// append the post element to the posts array.
-						console.log(spanElement.text());
+						console.log('CENSOR TEXT: ' + spanElement.text());
 						posts.push(wrapperElem);
 					}
 				}
 			});
 		});
-		console.log('Found ' + posts.length + ' posts by ' + name + ' to censor.');
+		console.log('-- Found ' + posts.length + ' posts by ' + name + ' to censor.');
 
 		censorPostContent(posts);
 	}
@@ -118,7 +118,7 @@ var censorPostContent = function (posts) {
 			// logging content data
 			var id  = elem.data('gt').fbstory;
 
-			if (!window.content_list[id]) {
+			if (!window.content_list[id] && ($(contentTag).text().indexOf('Warning!') === -1)) {
 				window.content_list[id] = {
 					originalContent: contentTag,
 					data: null,
@@ -132,6 +132,10 @@ var censorPostContent = function (posts) {
 
 				// replace text with censor tag
 				$(this).replaceWith(CENSOR_TAG);
+			} else {
+				console.log('Same ID found!');
+				console.log('Existing text: ' + $(window.content_list[id].originalContent).text());
+				console.log('Imposter tag: ' + $(contentTag).text());
 			}
 		});
 	}
@@ -155,7 +159,8 @@ window.init = function (input) {
 		elem.children().last().remove();
 		elem.find('.censor').each(function (index) {
 			if (!window.content_list[id]) {
-				location.reload();
+				// location.reload();
+				console.log('Could not find id: ' + id);
 			}
 			$(this).replaceWith($(window.content_list[id].originalContent))
 		});
@@ -174,31 +179,47 @@ window.onscroll = function () {
 		$('#censor-off').trigger('click');
 		$('#censor-on').trigger('click');
 	}
-}
+};
+
+$(document).on('click', function (e) {
+	var url = window.location.href;
+	var group_url = 'https://www.facebook.com/groups/';
+	// check if navigated to a facebook group page
+	if (url.indexOf(group_url) === 0 && url !== window.store) {
+		console.log('Navigated to a new group page: ' + url);
+		setTimeout(function () {
+			console.log('Loading extension.');
+			window.store = url;
+			loadBox();
+		}, 2000);
+	}
+});
 
 window.onload = window.onpageshow = function () {
     console.log('Running script on a Facebook group page.');
+    loadBox();
+};
 
-    if (!$('#pagelet_group_').children().first().hasClass('form-style-6')) {
-    	$('#pagelet_group_').prepend(inputBox);
-    }
-	
-	window.names = '';
-	$('#censor-on').on('click', function () {
-		$('.reset').trigger('click');
-        window.init(window.names);
-    });
+var loadBox = function () {
+	if (!$('#pagelet_group_').children().first().hasClass('form-style-6')) {
+        $('#pagelet_group_').prepend(inputBox);
+        window.names = '';
+		$('#censor-on').on('click', function () {
+			$('.reset').trigger('click');
+	        window.init(window.names);
+	    });
 
-    $('#censor-off').on('click', function () {
-        $('.reset').trigger('click');
-    });
+	    $('#censor-off').on('click', function () {
+	        $('.reset').trigger('click');
+	    });
 
-    $("#names").on('keyup', function (e) {
-        var code = (e.keyCode ? e.keyCode : e.which);
-		$("form").submit(function(e){
-            return false;
+	    $("#names").on('keyup', function (e) {
+	        var code = (e.keyCode ? e.keyCode : e.which);
+			$("form").submit(function(e){
+	            return false;
+			});
+	        var text = $('#names').val();
+			window.names = text;
 		});
-        var text = $('#names').val();
-		window.names = text;
-	});
+    }
 };
